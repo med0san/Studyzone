@@ -106,6 +106,7 @@ ul {
     height: 3px;
     background: var(--dark);
     border-radius: 2px;
+    transition: all 0.3s ease;
 }
 
 /* Buttons */
@@ -713,22 +714,61 @@ ul {
     opacity: 0.8;
 }
 
-/* Responsive */
+/* ========================================
+   RESPONSIVE + MENU MOBILE FIX
+   ======================================== */
 @media (max-width: 968px) {
-    .nav-menu {
-        display: none;
-    }
     .hamburger {
         display: flex;
+        z-index: 1001;
     }
+
+    .nav-menu {
+        position: fixed;
+        left: -100%;
+        top: 70px;
+        flex-direction: column;
+        background-color: var(--white);
+        width: 100%;
+        text-align: center;
+        transition: left 0.3s ease;
+        box-shadow: var(--shadow-xl);
+        padding: 2rem 0;
+        gap: 0;
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    .nav-link {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    /* Animation hamburger */
+    .hamburger.active span:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+
     .hero-content,
     .about-grid,
     .contact-grid {
         grid-template-columns: 1fr;
     }
+
     .hero-title {
         font-size: 2rem;
     }
+
     .about-stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -738,9 +778,11 @@ ul {
     .hero-buttons {
         flex-direction: column;
     }
+
     .about-stats-grid {
         grid-template-columns: 1fr;
     }
+
     .contact-form {
         grid-template-columns: 1fr;
     }
