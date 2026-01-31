@@ -1,4 +1,6 @@
-// Smooth scrolling
+// ========================================
+// NAVIGATION SMOOTH SCROLL
+// ========================================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -12,7 +14,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Active link
+// ========================================
+// ACTIVE LINK ON SCROLL
+// ========================================
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-link');
 
@@ -32,17 +36,21 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Menu mobile
+// ========================================
+// MENU MOBILE (HAMBURGER)
+// ========================================
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
 if (hamburger && navMenu) {
+    // Toggle menu
     hamburger.addEventListener('click', (e) => {
         e.stopPropagation();
         navMenu.classList.toggle('active');
         hamburger.classList.toggle('active');
     });
 
+    // Fermer menu au clic sur lien
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
             navMenu.classList.remove('active');
@@ -50,6 +58,7 @@ if (hamburger && navMenu) {
         });
     });
 
+    // Fermer menu si clic extérieur
     document.addEventListener('click', (e) => {
         if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
             navMenu.classList.remove('active');
@@ -58,41 +67,68 @@ if (hamburger && navMenu) {
     });
 }
 
-// Form EMAIL (au lieu de WhatsApp)
+// ========================================
+// FORMULAIRE CONTACT → EMAIL
+// ========================================
 const contactForm = document.getElementById('contactForm');
+
 if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        const formData = new FormData(this);
-        const data = Object.fromEntries(formData);
 
-        // Construction du corps de l'email
-        const subject = `Demande de cours - ${data.level}`;
+        // Récupération des données
+        const formData = new FormData(this);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const phone = formData.get('phone') || 'Non renseigné';
+        const level = formData.get('level');
+        const message = formData.get('message');
+
+        // Validation
+        if (!name || !email || !level || !message) {
+            alert('Veuillez remplir tous les champs obligatoires.');
+            return;
+        }
+
+        // Construction de l'email
+        const subject = `Demande de cours - ${level}`;
         const body = `Bonjour,
 
-Voici une nouvelle demande de cours :
+Nouvelle demande de cours particuliers :
 
-Nom : ${data.name}
-Email : ${data.email}
-Téléphone : ${data.phone || 'Non renseigné'}
-Niveau : ${data.level}
+Nom : ${name}
+Email : ${email}
+Téléphone : ${phone}
+Niveau : ${level}
 
 Message :
-${data.message}
+${message}
 
 Cordialement,
-${data.name}`;
+${name}`;
 
-        // Ouverture du client email
-        const mailtoURL = `mailto:studyzonejr@outlook.fr?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        window.location.href = mailtoURL;
+        // Encodage pour mailto
+        const mailtoLink = `mailto:studyzonejr@outlook.fr?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-        alert('Votre client email va s'ouvrir. Cliquez sur "Envoyer" pour envoyer le message.');
+        // Ouverture client email
+        window.location.href = mailtoLink;
+
+        // Message confirmation
+        alert('Votre client email va s'ouvrir. Envoyez le message en cliquant sur "Envoyer".');
+
+        // Reset formulaire
         this.reset();
     });
 }
 
-// Animations
+// ========================================
+// ANIMATIONS ON SCROLL
+// ========================================
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -100,19 +136,24 @@ const observer = new IntersectionObserver((entries) => {
             entry.target.style.transform = 'translateY(0)';
         }
     });
-}, { threshold: 0.1 });
+}, observerOptions);
 
-document.querySelectorAll('.service-card, .pricing-card, .availability-card').forEach(el => {
+// Observer les cartes
+document.querySelectorAll('.service-card, .pricing-card, .availability-card, .highlight-item').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(20px)';
     el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     observer.observe(el);
 });
 
-// Counter animation
+// ========================================
+// COUNTER ANIMATION (Stats)
+// ========================================
 function animateCounter(element, target, duration = 2000) {
+    const start = 0;
     const increment = target / (duration / 16);
-    let current = 0;
+    let current = start;
+
     const timer = setInterval(() => {
         current += increment;
         if (current >= target) {
@@ -139,3 +180,20 @@ const statsObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.stat-number').forEach(stat => {
     statsObserver.observe(stat);
 });
+
+// ========================================
+// NAVBAR SCROLL EFFECT
+// ========================================
+window.addEventListener('scroll', () => {
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        if (window.scrollY > 50) {
+            navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.15)';
+        } else {
+            navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+        }
+    }
+});
+
+console.log('✅ StudyZone script chargé avec succès');
+console.log('📧 Formulaire configuré pour: studyzonejr@outlook.fr');
