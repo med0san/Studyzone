@@ -787,3 +787,38 @@ ul {
         grid-template-columns: 1fr;
     }
 }
+/* Google Form Section */
+.google-form-section {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    color: var(--white);
+}
+
+.google-form-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.google-form-section p {
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+}
+
+.google-form-section .btn {
+    margin-bottom: 1rem;
+}
+
+.form-note {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin-top: 1rem;
+}
+
+.contact-form-container h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--dark);
+}
