@@ -32,21 +32,17 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// ========================================
-// MENU MOBILE FIX
-// ========================================
+// Menu mobile
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
 if (hamburger && navMenu) {
-    // Toggle menu au clic sur hamburger
     hamburger.addEventListener('click', (e) => {
         e.stopPropagation();
         navMenu.classList.toggle('active');
         hamburger.classList.toggle('active');
     });
 
-    // Fermer le menu quand on clique sur un lien
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
             navMenu.classList.remove('active');
@@ -54,7 +50,6 @@ if (hamburger && navMenu) {
         });
     });
 
-    // Fermer le menu si on clique en dehors
     document.addEventListener('click', (e) => {
         if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
             navMenu.classList.remove('active');
@@ -63,26 +58,36 @@ if (hamburger && navMenu) {
     });
 }
 
-// Form WhatsApp
+// Form EMAIL (au lieu de WhatsApp)
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const formData = new FormData(this);
         const data = Object.fromEntries(formData);
-        const message = `Nouvelle demande:
 
-Nom: ${data.name}
-Email: ${data.email}
-Téléphone: ${data.phone || 'Non renseigné'}
-Niveau: ${data.level}
+        // Construction du corps de l'email
+        const subject = `Demande de cours - ${data.level}`;
+        const body = `Bonjour,
 
-Message:
-${data.message}`;
+Voici une nouvelle demande de cours :
 
-        const whatsappURL = `https://wa.me/33651053856?text=${encodeURIComponent(message)}`;
-        window.open(whatsappURL, '_blank');
-        alert('Redirection vers WhatsApp...');
+Nom : ${data.name}
+Email : ${data.email}
+Téléphone : ${data.phone || 'Non renseigné'}
+Niveau : ${data.level}
+
+Message :
+${data.message}
+
+Cordialement,
+${data.name}`;
+
+        // Ouverture du client email
+        const mailtoURL = `mailto:studyzonejr@outlook.fr?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailtoURL;
+
+        alert('Votre client email va s'ouvrir. Cliquez sur "Envoyer" pour envoyer le message.');
         this.reset();
     });
 }
